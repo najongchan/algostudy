@@ -1,0 +1,42 @@
+def solution(m, n, board):
+    answer = 0   
+    for i in range(0, m):   
+        board[i] = list(board[i])
+    newBoard = []
+    for j in range(0, n):
+        tempList = []
+        for i in range(m-1, -1, -1):
+            tempList.append(board[i][j])
+        newBoard.append(tempList)
+        
+    while 1:
+        marks = set()
+    
+        for j in range(0, len(newBoard)-1):
+            for i in range(0, len(newBoard[j])-1):
+                if len(newBoard[j]) < 1:
+                    continue
+                if newBoard[j][i] == newBoard[j+1][i] and newBoard[j][i] == newBoard[j][i+1]:
+                    if newBoard[j][i] == newBoard[j+1][i+1] and newBoard[j][i] != ' ':
+                        marks.add((j,i))
+                        marks.add((j+1,i))
+                        marks.add((j,i+1))
+                        marks.add((j+1,i+1))
+        if len(marks) == 0:
+            return answer
+        else:
+            for mark in marks:
+                answer += 1
+                newBoard[mark[0]][mark[1]] = ' '
+
+            # compress
+            for j in range(0, len(newBoard)):
+                temp = []
+                for i in range(0, len(newBoard[j])):
+                    if newBoard[j][i] != ' ':
+                        temp.append(newBoard[j][i])
+                
+                length = n - len(temp) 
+                temp += [' '] * length
+
+                newBoard[j] = temp
